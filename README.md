@@ -1,29 +1,25 @@
-# WoW Icons Diffusion Model Study
+# Diffusion Model Study
+https://github.com/user-attachments/assets/fdbc5fb1-7833-4600-aab0-f7840acb4f72
 
-![image](https://github.com/user-attachments/assets/1722cf1e-6581-4b8a-a2fe-7de6aa2afdd9)
-
-This repository contains my personal implementation of a diffusion model for generating World of Warcraft style icons. This project is a learning exercise, directly based on ["A Diffusion Model from Scratch in PyTorch"](https://github.com/acids-ircam/diffusion_models) and additional resources cited below.
+This repository contains my personal implementation of a diffusion model for generating MNIST handwritten digits. This project is a learning exercise, directly based on ["A Diffusion Model from Scratch in PyTorch"](https://github.com/acids-ircam/diffusion_models) and additional resources cited below. This is also adapted for M1 pro (mps).
 
 ## Project Context
-![image](https://github.com/user-attachments/assets/7aa0660b-fc4a-4871-844d-8b416b719792)
-
+![image](https://github.com/user-attachments/assets/d9e88cd7-b19a-4328-a6e4-56055a09ac31)
 - **Educational Purpose**: This implementation was created as a self-study exercise to understand diffusion models through hands-on practice
 - **Hardware Limitations**: Due to computational constraints, the model wasn't fully optimized or trained for extended periods
-- **Source Material**: The code and approach directly adapt existing implementations with modifications for the WoW dataset
+- **Source Material**: The code and approach directly adapt existing implementations with modifications for the MNIST dataset
 
 ## Implementation Details
-
 ### Dataset
-![image](https://github.com/user-attachments/assets/41694747-1aba-423d-80af-8b53e64a4b24)
-
-- **Name**: CleanIcons-MechagnomeEdition (version 11.1.0.59347-V4-1)
-- **Source**: [GitHub - AcidWeb/Clean-Icons-Mechagnome-Edition](https://github.com/AcidWeb/Clean-Icons-Mechagnome-Edition)
-- **Format**: TGA (Truevision Graphics Adapter) files with transparency support
+![image](https://github.com/user-attachments/assets/e24d0b63-9a36-4de3-8d8e-c19baa68de17)
+- **Name**: MNIST Database of handwritten digits
+- **Source**: [MNIST Dataset](http://yann.lecun.com/exdb/mnist/)
+- **Format**: 28×28 grayscale images of handwritten digits (0-9)
 
 ### Model Architecture
 - **Backbone**: Simplified U-Net architecture
 - **Adaptations**: 
-  - Modified for TGA format support
+  - Modified for grayscale image support
   - Optimized for Apple Silicon (MPS) compatibility
   - Timestep embedding with sinusoidal position encodings
 
@@ -31,12 +27,10 @@ This repository contains my personal implementation of a diffusion model for gen
 - **Forward Diffusion**: Implemented with linear beta schedule
 - **Reverse Diffusion**: DDPM (Denoising Diffusion Probabilistic Model) approach
 - **Loss Function**: L1 loss between predicted and actual noise
-- **Data Pipeline**: Custom loader for WoW icon processing
+- **Data Pipeline**: Standard PyTorch MNIST data loader with normalization
 
 ## Primary References
-
 This implementation directly adapts code and concepts from:
-
 1. **Main Reference**: ["A Diffusion Model from Scratch in PyTorch"](https://github.com/acids-ircam/diffusion_models)
 2. **DDPM Implementation**: [Denoising Diffusion PyTorch](https://github.com/lucidrains/denoising-diffusion-pytorch) by Phil Wang
 3. **Tutorial**: [Huggingface Diffusion Models Tutorial](https://github.com/huggingface/diffusion-models-class) by Niels Rogge and Kashif Rasul
@@ -47,22 +41,18 @@ This implementation directly adapts code and concepts from:
 - Dhariwal & Nichol (2021). [Diffusion Models Beat GANs on Image Synthesis](https://arxiv.org/abs/2105.05233)
 
 ## Usage
-
 This notebook serves primarily as a learning resource:
-
 1. Ensure PyTorch is installed with MPS support
-2. Place WoW icons in the `./data/ICONS` directory
+2. The MNIST dataset will be automatically downloaded by torchvision
 3. Run the notebook cells sequentially to understand each component
 
 ## Potential Extensions
-
-### Text-Conditional Generation
-To add text prompts (e.g., "create a frost spell icon"):
-
+### Conditional Generation
+To add conditional digit generation (e.g., "generate digit 7"):
 - **Required Changes**:
-  - Implement a conditional U-Net with text encoder (CLIP/T5/BERT)
-  - Add cross-attention layers to process text embeddings
-  - Create or source text-icon paired training data
+  - Implement a conditional U-Net with label embedding
+  - Add cross-attention layers or class embeddings
+  - Use the labels already provided in the MNIST dataset
 
 ### Alternative Approaches
 - **Score-Based Diffusion**: Implement Score-SDE for improved sample quality and flexibility
@@ -71,12 +61,12 @@ To add text prompts (e.g., "create a frost spell icon"):
 - **Training Enhancements**: Dynamic thresholding, classifier guidance
 
 ### Domain-Specific Features
-- **Style Control**: Conditioning on specific WoW expansion art styles
-- **Class-Specific Generation**: Target spell vs. item vs. ability icons
-- **Color Palette Conditioning**: Control color themes and motifs
+- **Style Control**: Conditioning on specific handwriting styles
+- **Multi-digit Generation**: Extending to generate multiple digits or simple equations
+- **Handwriting Transfer**: Generate digits in the style of specific writers
 
 ## Requirements
 - PyTorch 2.6.0+ with MPS support
-- PIL (Python Imaging Library)
+- torchvision
 - numpy
 - matplotlib
